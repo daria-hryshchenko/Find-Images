@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export class FetchImagesAPI {
   static BASE_URL = 'https://pixabay.com/api/';
 

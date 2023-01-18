@@ -1,8 +1,10 @@
+import {
+  FetchImagesAPI
+} from './fetchImagesAPI.js';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import './../css/styles.css';
-import axios from "axios";
 
 const form = document.querySelector('.search-form');
 const galleryEl = document.querySelector('.gallery');
