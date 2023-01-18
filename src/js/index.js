@@ -4,8 +4,8 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import './../css/styles.css';
 import {
   FetchImagesAPI
-} from './getImagesApi';
-import axios from 'axios';
+} from './fetchImagesAPI';
+
 
 const form = document.querySelector('.search-form');
 const galleryEl = document.querySelector('.gallery');
