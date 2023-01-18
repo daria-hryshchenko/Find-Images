@@ -74,7 +74,7 @@ async function loadMoreImages() {
     fetchImages.page += 1;
     const data = await fetchImages.getPhotos();
     // console.log(data.hits.length)
-    currentHits += data.hits.length;
+    // currentHits += data.hits.length;
     console.log(fetchImages.page)
     console.log(Math.ceil(data.totalHits / 40))
     // console.log(data)
