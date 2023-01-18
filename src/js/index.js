@@ -10,12 +10,10 @@ import {
 const form = document.querySelector('.search-form');
 const galleryEl = document.querySelector('.gallery');
 const loading = document.querySelector('.loading');
-const loadMoreBtnEL = document.querySelector('.load-more');
+const btnEl = document.querySelector('.btn');
 
 
-loadMoreBtnEL.classList.add('is-hidden');
-
-
+btnEl.style.display = 'none';
 
 const lightBox = new SimpleLightbox('.gallery a', {
   captions: true,
@@ -46,7 +44,8 @@ async function onSubmitSearchForm(event) {
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
-      loadMoreBtnEL.classList.add('is-hidden');
+      btnEl.style.display = 'none';
+      // loadMoreBtnEL.classList.add('is-hidden');
       galleryEl.innerHTML = '';
       return;
     }
@@ -56,16 +55,18 @@ async function onSubmitSearchForm(event) {
     galleryEl.innerHTML = createImageList(response.hits);
     lightBox.refresh();
     if (response.totalHits > 40) {
-      loadMoreBtnEL.classList.remove('is-hidden');
+      btnEl.style.display = 'flex';
+      //   loadMoreBtnEL.classList.remove('is-hidden');
     } else {
-      loadMoreBtnEL.classList.add('is-hidden');
+      btnEl.style.display = 'none';
+      // loadMoreBtnEL.classList.add('is-hidden');
     }
   } catch (error) {
     console.error(error);
   }
 }
 
-loadMoreBtnEL.addEventListener('click', loadMoreImages);
+btnEl.addEventListener('click', loadMoreImages);
 
 
 async function loadMoreImages() {
@@ -74,7 +75,8 @@ async function loadMoreImages() {
     const data = await fetchImages.getPhotos();
 
     if (data.hits.length < fetchImages.elementsPerPage) {
-      loadMoreBtnEL.classList.add('is-hidden');
+      btnEl.style.display = 'none';
+      // btnEl.classList.add('is-hidden');
 
       Notiflix.Notify.failure(
         "We're sorry, but you've reached the end of search results."
