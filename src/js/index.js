@@ -31,9 +31,9 @@ form.addEventListener('submit', onSubmitSearchForm);
 async function onSubmitSearchForm(event) {
   event.preventDefault();
   galleryEl.innerHTML = '';
-  fetchImages.query = event.currentTarget.elements.searchQuery.value;
+  fetchImages.query = event.target.elements.searchQuery.value;
   fetchImages.page = 1;
-  event.currentTarget.reset();
+  event.target.reset();
 
 
   try {
@@ -71,16 +71,16 @@ btnEl.addEventListener('click', loadMoreImages);
 
 async function loadMoreImages() {
   fetchImages.page += 1;
+
   try {
     const data = await fetchImages.getPhotos();
-
-    if (data.hits.length < fetchImages.elementsPerPage) {
-      btnEl.style.display = 'none';
-      // btnEl.classList.add('is-hidden');
-
+    // console.log(data.hits.length)
+    // console.log(data.totalHits)
+    if (data.hits.length === 0) {
       Notiflix.Notify.failure(
         "We're sorry, but you've reached the end of search results."
       );
+      btnEl.style.display = 'none';
     }
     galleryEl.insertAdjacentHTML('beforeend', createImageList(data.hits));
     lightBox.refresh();
