@@ -75,13 +75,14 @@ async function loadMoreImages() {
     const data = await fetchImages.getPhotos();
     // console.log(data.hits.length)
     currentHits += data.hits.length;
-    // console.log(data.total)
-    // console.log(currentHits)
+    console.log(data.total)
+    console.log(currentHits)
     if (currentHits === data.total) {
       Notiflix.Notify.failure(
         "We're sorry, but you've reached the end of search results."
       );
       btnEl.style.display = 'none';
+      currentHits = 40;
     }
     galleryEl.insertAdjacentHTML('beforeend', createImageList(data.hits));
     lightBox.refresh();
