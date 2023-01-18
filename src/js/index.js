@@ -20,11 +20,9 @@ const lightBox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
-
-
-
-
+let currentHits = 40;
 const fetchImages = new FetchImagesAPI();
+
 
 form.addEventListener('submit', onSubmitSearchForm);
 
@@ -70,13 +68,16 @@ btnEl.addEventListener('click', loadMoreImages);
 
 
 async function loadMoreImages() {
-  fetchImages.page += 1;
+
 
   try {
+    fetchImages.page += 1;
     const data = await fetchImages.getPhotos();
     // console.log(data.hits.length)
-    // console.log(data.totalHits)
-    if (data.hits.length === 0) {
+    currentHits += data.hits.length;
+    // console.log(data.total)
+    // console.log(currentHits)
+    if (currentHits === data.total) {
       Notiflix.Notify.failure(
         "We're sorry, but you've reached the end of search results."
       );
