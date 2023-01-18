@@ -10,6 +10,10 @@ import {
 const form = document.querySelector('.search-form');
 const galleryEl = document.querySelector('.gallery');
 const loading = document.querySelector('.loading');
+const loadMoreBtnEL = document.querySelector('.load-more');
+
+
+loadMoreBtnEL.classList.add('is-hidden');
 
 
 
@@ -18,6 +22,8 @@ const lightBox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
+
+
 
 
 const fetchImages = new FetchImagesAPI();
@@ -30,13 +36,17 @@ async function onSubmitSearchForm(event) {
   fetchImages.query = event.currentTarget.elements.searchQuery.value;
   fetchImages.page = 1;
   event.currentTarget.reset();
+
+
   try {
     const response = await fetchImages.getPhotos();
+
 
     if (response.totalHits === 0 || fetchImages.query.length === 0) {
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
+      loadMoreBtnEL.classList.add('is-hidden');
       galleryEl.innerHTML = '';
       return;
     }
@@ -45,10 +55,17 @@ async function onSubmitSearchForm(event) {
     }
     galleryEl.innerHTML = createImageList(response.hits);
     lightBox.refresh();
+    if (response.totalHits > 40) {
+      loadMoreBtnEL.classList.remove('is-hidden');
+    } else {
+      loadMoreBtnEL.classList.add('is-hidden');
+    }
   } catch (error) {
     console.error(error);
   }
 }
+
+loadMoreBtnEL.addEventListener('click', loadMoreImages);
 
 
 async function loadMoreImages() {
@@ -57,6 +74,7 @@ async function loadMoreImages() {
     const data = await fetchImages.getPhotos();
 
     if (data.hits.length < fetchImages.elementsPerPage) {
+      loadMoreBtnEL.classList.add('is-hidden');
 
       Notiflix.Notify.failure(
         "We're sorry, but you've reached the end of search results."
@@ -99,23 +117,20 @@ function createImageList(array) {
 }
 
 
-window.addEventListener('scroll', showLoading);
+// window.addEventListener('scroll', showLoading);
 
-async function showLoading() {
-  try {
-    const {
-      scrollTop,
-      scrollHeight,
-      clientHeight
-    } = document.documentElement;
+// function showLoading() {
 
-    if (clientHeight + scrollTop >= scrollHeight - 5) {
-      await new Promise(resolve => {
-        setTimeout(loadMoreImages(resolve), 1000)
-      })
-      loading.classList.add('show');
-    }
-  } catch (error) {
-    console.error(error);
-  }
-}
+//   const {
+//     scrollTop,
+//     scrollHeight,
+//     clientHeight
+//   } = document.documentElement;
+
+//   if (clientHeight + scrollTop >= scrollHeight - 5) {
+//     setTimeout(loadMoreImages(resolve), 1000)
+//     loading.classList.add('show');
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }

@@ -141,3 +141,23 @@ body {
     transform: translateY(-10px);
   }
 }
+
+.load-more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px auto;
+  width: 200px;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 300ms linear, color 300ms linear;
+  background-color: #0066cc;
+  color: #f1f1f1;
+}
+
+.load-more:hover {
+  background-color: #ffd700;
+  color: #212121;
+}
