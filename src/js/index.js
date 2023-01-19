@@ -29,16 +29,21 @@ form.addEventListener('submit', onSubmitSearchForm);
 async function onSubmitSearchForm(event) {
   event.preventDefault();
   galleryEl.innerHTML = '';
-  fetchImages.query = event.target.elements.searchQuery.value;
+  fetchImages.query = event.target.elements.searchQuery.value.trim();
   fetchImages.page = 1;
   event.target.reset();
 
 
   try {
+    if (fetchImages.query.length === 0) {
+      Notiflix.Notify.failure(
+        'Sorry, enter a valid search query. Please try again.');
+      return;
+    }
     const response = await fetchImages.getPhotos();
 
 
-    if (response.totalHits === 0 || fetchImages.query.length === 0) {
+    if (response.totalHits === 0) {
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
@@ -47,7 +52,10 @@ async function onSubmitSearchForm(event) {
       galleryEl.innerHTML = '';
       return;
     }
-    if (response.totalHits > 0) {
+    if (response.totalHits > 0 && response.totalHits <= 40) {
+      Notiflix.Notify.info(`We found only ${response.totalHits} images.`);
+    }
+    if (response.totalHits > 40) {
       Notiflix.Notify.info(`Hooray! We found ${response.totalHits} images.`);
     }
     galleryEl.innerHTML = createImageList(response.hits);
